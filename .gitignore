@@ -1,0 +1,55 @@
+bin/
+obj/
+BenchmarkDotNet.Artifacts/
+project.lock.json
+/perf
+/debug/
+/staging/
+/Packages/
+*.nuget.props
+
+# VS auto-generated files for csproj files
+*.csproj.user
+
+# Visual Studio IDE directory
+.vs/
+
+# VSCode directories that are not at the repository root
+/**/.vscode/
+
+# Ignore executables
+*.exe
+*.msi
+*.appx
+*.msix
+
+# Ignore binaries and symbols
+*.pdb
+*.dll
+*.wixpdb
+
+# Ignore packages
+*.deb
+*.tar.gz
+*.zip
+*.rpm
+*.pkg
+*.nupkg
+*.AppImage
+
+# default location for produced nuget packages
+/nuget-artifacts
+
+# resgen output
+gen
+
+# TestsResults
+TestsResults*.xml
+ParallelXUnitResults.xml
+xUnitResults.xml
+
+# BenchmarkDotNet artifacts
+perf/BenchmarkDotNet.Artifacts/
+
+# Ignore logfiles
+logfile/*

@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyVersion>0.9.1.0</AssemblyVersion>
+    <FileVersion>0.9.1</FileVersion>
+    <VersionPrefix>0.9.1</VersionPrefix>
+    <!-- <VersionSuffix>beta1</VersionSuffix> -->
+    <Authors>Ilya Sazonov</Authors>
+    <Product>Sibs.IPNetworks.BinaryTrie</Product>
+    <Description>Lookup custom information for IP addresses in networks by binary trie algorithm.</Description>
+    <Copyright>Copyright © I.E.Sazonov</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Title>$(Product)</Title>
+    <PackageId>$(Product)</PackageId>
+    <PackageTags>ip, ipv4, ipv6, net, network, lookup, binary search</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageProjectUrl>https://github.com/iSazonov/BinaryTrie</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/iSazonov/BinaryTrie.git</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RootNamespace>$(Product)</RootNamespace>
+    <AssemblyName>$(Product)</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="BinaryTrieTests" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.StaticAnalysis" Version="9.3.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <StaticAnalysisCodeType>NonProdLib</StaticAnalysisCodeType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AnalysisMode>Recommended</AnalysisMode>
+  </PropertyGroup>
+  <PropertyGroup>
+    <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+    <OptimizeImplicitlyTriggeredBuild>True</OptimizeImplicitlyTriggeredBuild>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+</Project>
