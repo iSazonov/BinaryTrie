@@ -20,7 +20,8 @@ public sealed class IPBinaryTrie<TLeaf>
         public Node<TNodeLeaf>? Branch0;
         public Node<TNodeLeaf>? Branch1;
         public bool IsLeaf;
-        public TNodeLeaf? NodeLeaf;
+        [System.Diagnostics.CodeAnalysis.AllowNull]
+        public TNodeLeaf NodeLeaf;
     }
 
     const int IPv4AddressBytes = 4;
@@ -32,12 +33,12 @@ public sealed class IPBinaryTrie<TLeaf>
 
     private Node<TLeaf> _rootIPv4;
     private Node<TLeaf> _rootIPv6;
-    private TLeaf? _defaultResult;
+    private TLeaf _defaultResult;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="IPBinaryTrie{TLeaf}"/>.
     /// </summary>
-    public IPBinaryTrie() : this(defaultResult: default)
+    public IPBinaryTrie() : this(defaultResult: default!)
     {
     }
 
@@ -45,7 +46,7 @@ public sealed class IPBinaryTrie<TLeaf>
     /// Initializes a new instance of the <see cref="IPBinaryTrie{TLeaf}"/>.
     /// </summary>
     /// <param name="defaultResult">The default value returned if IP address <see cref="IPAddress"/> is not found.</param>
-    public IPBinaryTrie(TLeaf? defaultResult)
+    public IPBinaryTrie(TLeaf defaultResult)
     {
         _rootIPv4 = new Node<TLeaf>();
         _rootIPv6 = new Node<TLeaf>();
@@ -59,7 +60,7 @@ public sealed class IPBinaryTrie<TLeaf>
     /// <returns><see typeparamref="TLeaf"/> if found, otherwise null.</returns>
     /// <exception cref="ArgumentNullException">If <paramref name="address"/> is null.</exception>
     /// <exception cref="FormatException">If <paramref name="address"/> is not a valid IP address.</exception>
-    public TLeaf? Lookup(string address)
+    public TLeaf Lookup(string address)
     {
         IPAddress ip = IPAddress.Parse(address);
 
@@ -72,7 +73,7 @@ public sealed class IPBinaryTrie<TLeaf>
     /// <param name="address">An IP address <see cref="IPAddress"/>.</param>
     /// <returns><see typeparamref="TLeaf"/> if found, otherwise null.</returns>
     /// <exception cref="ArgumentNullException">If <paramref name="address"/> is null.</exception>
-    public TLeaf? Lookup(IPAddress address)
+    public TLeaf Lookup(IPAddress address)
     {
         ArgumentNullException.ThrowIfNull(address);
 
@@ -82,7 +83,7 @@ public sealed class IPBinaryTrie<TLeaf>
 
         Node<TLeaf> trieRoot = address.AddressFamily == AddressFamily.InterNetwork ? _rootIPv4 : _rootIPv6;
 
-        TLeaf? result = LookupCore(addressBuffer, trieRoot, _defaultResult);
+        TLeaf result = LookupCore(addressBuffer, trieRoot, _defaultResult);
         return result;
     }
 
@@ -92,17 +93,17 @@ public sealed class IPBinaryTrie<TLeaf>
     /// <param name="addressBuffer">An IP address in network (BigEndian) order.</param>
     /// <returns><see typeparamref="TLeaf"/> if found, otherwise null.</returns>
     /// <exception cref="ArgumentException">If <paramref name="addressBuffer"/> does not have a length of 4 for IPv4 or 16 for IPv6.</exception>
-    public TLeaf? Lookup(ReadOnlySpan<byte> addressBuffer)
+    public TLeaf Lookup(ReadOnlySpan<byte> addressBuffer)
     {
         IPBinaryTrie<TLeaf>.ThrowIfNotIP(addressBuffer);
 
         return LookupCore(addressBuffer, addressBuffer.Length == IPv4AddressBytes ? _rootIPv4 : _rootIPv6, _defaultResult);
     }
 
-    private static TLeaf? LookupCore(ReadOnlySpan<byte> addressBuffer, Node<TLeaf> root, TLeaf? defaultResult)
+    private static TLeaf LookupCore(ReadOnlySpan<byte> addressBuffer, Node<TLeaf> root, TLeaf defaultResult)
     {
         Node<TLeaf> currentNode = root;
-        TLeaf? result = defaultResult;
+        TLeaf result = defaultResult;
         int currentBit = 0;
         for (int i = 0; i < addressBuffer.Length; i++)
         {
