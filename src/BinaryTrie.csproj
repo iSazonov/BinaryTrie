@@ -44,7 +44,7 @@
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
-    <StaticAnalysisCodeType>NonProdLib</StaticAnalysisCodeType>
+    <StaticAnalysisCodeType>ProdLib</StaticAnalysisCodeType>
   </PropertyGroup>
 
   <PropertyGroup>

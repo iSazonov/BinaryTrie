@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -407,6 +408,94 @@ public class IPv4
 
             l2 = t.Lookup("1.4.0.0");
             Assert.Null(l2);
+        }
+
+        [Fact]
+        public void Add_Network_1_0_0_0_14_With_Default()
+        {
+            var t = new IPBinaryTrie<Leaf>(defaultResult: new Leaf() { ip = IPAddress.Parse("1.1.1.2") });
+            var a0 = "1.0.0.0";
+            Leaf? l0 = t.Lookup(a0);
+            Assert.NotNull(l0);
+            Assert.Equal(IPAddress.Parse("1.1.1.2"), l0.ip);
+
+            t.AddOrUpdate(IPNetwork.Parse("1.0.0.0/14"), new Leaf() { ip = IPAddress.Parse("1.1.1.1") });
+
+            Leaf? l1 = t.Lookup("1.0.0.0");
+            Assert.NotNull(l1);
+            Assert.Equal(IPAddress.Parse("1.1.1.1"), l1.ip);
+
+            Leaf? l2 = t.Lookup("1.3.255.255");
+            Assert.NotNull(l2);
+            Assert.Equal(IPAddress.Parse("1.1.1.1"), l2.ip);
+
+            l2 = t.Lookup("1.4.0.0");
+            Assert.NotNull(l2);
+            Assert.Equal(IPAddress.Parse("1.1.1.2"), l2.ip);
+        }
+
+        [Fact]
+        public void Add_Network_103_152_16_0_With_Default()
+        {
+            var t = new IPBinaryTrie<Leaf>(defaultResult: new Leaf() { ip = IPAddress.Parse("1.1.1.2") });
+            var a0 = "1.0.0.0";
+            Leaf? l0 = t.Lookup(a0);
+            Assert.NotNull(l0);
+            Assert.Equal(IPAddress.Parse("1.1.1.2"), l0.ip);
+
+            t.AddOrUpdate(IPNetwork.Parse("103.152.16.0/23"), new Leaf() { ip = IPAddress.Parse("1.1.1.1") });
+
+            Leaf? l1 = t.Lookup("103.152.16.1");
+            Assert.NotNull(l1);
+            Assert.Equal(IPAddress.Parse("1.1.1.1"), l1.ip);
+
+            Leaf? l2 = t.Lookup("103.152.116.1");
+            Assert.NotNull(l2);
+            Assert.Equal(IPAddress.Parse("1.1.1.2"), l2.ip);
+
+            l2 = t.Lookup("1.4.0.0");
+            Assert.NotNull(l2);
+            Assert.Equal(IPAddress.Parse("1.1.1.2"), l2.ip);
+        }
+
+        [Fact]
+        public void Add_Network_103_152_16_0_With_Default_True()
+        {
+            var t = new IPBinaryTrie<bool>(defaultResult: true);
+            var a0 = "1.0.0.0";
+            bool l0 = t.Lookup(a0);
+            Assert.True(l0);
+
+            t.AddOrUpdate(IPNetwork.Parse("103.152.16.0/23"), true);
+
+            bool l1 = t.Lookup("103.152.16.1");
+            Assert.True(l1);
+
+            bool l2 = t.Lookup("103.152.116.1");
+            Assert.True(l2);
+
+            l2 = t.Lookup("1.4.0.0");
+            Assert.True(l2);
+        }
+
+        [Fact]
+        public void Add_Network_103_152_16_0_With_Default_False()
+        {
+            var t = new IPBinaryTrie<bool>(defaultResult: false);
+            var a0 = "1.0.0.0";
+            bool l0 = t.Lookup(a0);
+            Assert.False(l0);
+
+            t.AddOrUpdate(IPNetwork.Parse("103.152.16.0/23"), true);
+
+            bool l1 = t.Lookup("103.152.16.1");
+            Assert.True(l1);
+
+            bool l2 = t.Lookup("103.152.116.1");
+            Assert.False(l2);
+
+            l2 = t.Lookup("1.4.0.0");
+            Assert.False(l2);
         }
     }
 
