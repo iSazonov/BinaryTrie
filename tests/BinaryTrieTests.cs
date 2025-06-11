@@ -418,6 +418,7 @@ public class IPv4
             Leaf? l0 = t.Lookup(a0);
             Assert.NotNull(l0);
             Assert.Equal(IPAddress.Parse("1.1.1.2"), l0.ip);
+            Assert.Equal(IPAddress.Parse("1.1.1.2"), t.DefaultResult.ip); // DefaultResult property works
 
             t.AddOrUpdate(IPNetwork.Parse("1.0.0.0/14"), new Leaf() { ip = IPAddress.Parse("1.1.1.1") });
 

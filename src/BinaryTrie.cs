@@ -15,7 +15,7 @@ namespace Sibs.IPNetworks;
 /// </remarks>
 public sealed class IPBinaryTrie<TLeaf>
 {
-    private class Node<TNodeLeaf>
+    private sealed class Node<TNodeLeaf>
     {
         public Node<TNodeLeaf>? Branch0;
         public Node<TNodeLeaf>? Branch1;
@@ -33,7 +33,11 @@ public sealed class IPBinaryTrie<TLeaf>
 
     private Node<TLeaf> _rootIPv4;
     private Node<TLeaf> _rootIPv6;
-    private TLeaf _defaultResult;
+
+    /// <summary>
+    /// A value returned if IP address <see cref="IPAddress"/> is not found.
+    /// </summary>
+    public TLeaf DefaultResult { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="IPBinaryTrie{TLeaf}"/>.
@@ -50,7 +54,7 @@ public sealed class IPBinaryTrie<TLeaf>
     {
         _rootIPv4 = new Node<TLeaf>();
         _rootIPv6 = new Node<TLeaf>();
-        _defaultResult = defaultResult;
+        DefaultResult = defaultResult;
     }
 
     /// <summary>
@@ -83,7 +87,7 @@ public sealed class IPBinaryTrie<TLeaf>
 
         Node<TLeaf> trieRoot = address.AddressFamily == AddressFamily.InterNetwork ? _rootIPv4 : _rootIPv6;
 
-        TLeaf result = LookupCore(addressBuffer, trieRoot, _defaultResult);
+        TLeaf result = LookupCore(addressBuffer, trieRoot, DefaultResult);
         return result;
     }
 
@@ -97,7 +101,7 @@ public sealed class IPBinaryTrie<TLeaf>
     {
         IPBinaryTrie<TLeaf>.ThrowIfNotIP(addressBuffer);
 
-        return LookupCore(addressBuffer, addressBuffer.Length == IPv4AddressBytes ? _rootIPv4 : _rootIPv6, _defaultResult);
+        return LookupCore(addressBuffer, addressBuffer.Length == IPv4AddressBytes ? _rootIPv4 : _rootIPv6, DefaultResult);
     }
 
     private static TLeaf LookupCore(ReadOnlySpan<byte> addressBuffer, Node<TLeaf> root, TLeaf defaultResult)
